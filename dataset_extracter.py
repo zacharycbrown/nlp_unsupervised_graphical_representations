@@ -115,10 +115,13 @@ def extract_gpt2_hidden_word_representations(word, save_activs_to):#, mode="full
         # get token-wise activations
         hidden, _ = model(tokens_tensor)
         hidden_np = hidden.cpu().numpy().squeeze()
+
         # identify hidden layer dimension that represents different tokens
-        seq_dim = hidden_np.shape.index(num_tokens)
+        # seq_dim = hidden_np.shape.index(num_tokens)
+        seq_dim = 0 # we know that the dimension corresponding to tokens is the 1st dimension, indexed by 0
+        
         # sum the hidden layer element-wise along the token dimension to get word vector representation
-        word_vec = np.sum(hidden_np, axis=seq_dim).squeeze()
+        word_vec = np.sum(hidden_np, axis=seq_dim)#.squeeze()
 
     # clear gpu memory
     torch.cuda.empty_cache()
